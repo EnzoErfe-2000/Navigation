@@ -15,5 +15,9 @@ namespace Navigation.Views
         {
             await Navigation.PushAsync(new ItemsPage());
         }
+        async void GoToCalc(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new CalculatorPage());
+        }
     }
 }

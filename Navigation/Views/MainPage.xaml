@@ -13,6 +13,8 @@
                    HorizontalTextAlignment="Center"
                    TextColor="White"
                    FontSize="36"
+                   FontFamily="Lobster"
+                   
                    FontAttributes="Bold" />
         </Frame>
         <Label Text="Select the next page"
@@ -47,7 +49,8 @@
                         VerticalOptions="Center"
                         HeightRequest="200"
                         WidthRequest="400"
-                        Margin="20,0" />
+                        Margin="20,0"
+                        Clicked="GoToCalc" />
 
                 <Button Grid.Row="1"
                         Grid.Column="0"
