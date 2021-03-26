@@ -1,0 +1,19 @@
+﻿using System;
+using System.ComponentModel;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace Navigation.Views
+{
+    public partial class MainPage : ContentPage
+    {
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+        async void GoToPage(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new ItemsPage());
+        }
+    }
+}

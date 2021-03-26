@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Navigation.Views.MainPage"
+             xmlns:vm="clr-namespace:Navigation.ViewModels"
+             Title="{Binding Title}">
+
+    <StackLayout>
+        <Frame BackgroundColor="#2196F3"
+               Padding="24"
+               CornerRadius="0">
+            <Label Text="Landing Page"
+                   HorizontalTextAlignment="Center"
+                   TextColor="White"
+                   FontSize="36"
+                   FontAttributes="Bold" />
+        </Frame>
+        <Label Text="Select the next page"
+               FontSize="32"
+               FontAttributes="Bold" />
+        <Frame>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+
+                <Button Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Page 1"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        HeightRequest="200"
+                        WidthRequest="400"
+                        Margin="20,0"
+                        Clicked="GoToPage"
+                        />
+                <Button Grid.Row="0"
+                        Grid.Column="1"
+                        Text="Page 2"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        HeightRequest="200"
+                        WidthRequest="400"
+                        Margin="20,0" />
+
+                <Button Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Page 3"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        HeightRequest="200"
+                        WidthRequest="400"
+                        Margin="20,0" />
+                <Button Grid.Row="1"
+                        Grid.Column="1"
+                        Text="Page 4"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        HeightRequest="200"
+                        WidthRequest="400"
+                        Margin="20,0" />
+            </Grid>
+        </Frame>
+    </StackLayout>
+
+</ContentPage>
