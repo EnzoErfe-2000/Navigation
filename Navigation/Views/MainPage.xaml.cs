@@ -21,7 +21,7 @@ namespace Navigation.Views
         }
         async void GoToCustBtn(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new CustomButtonPage());
+            await Navigation.PushModalAsync(new CustomButtonPage());
         }
     }
 }
