@@ -15,6 +15,7 @@ namespace Navigation
 
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
+
         }
 
         protected override void OnStart()

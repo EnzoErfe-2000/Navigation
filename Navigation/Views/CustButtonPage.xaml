@@ -1,12 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Navigation.Views.CustomButtonPage">
-    <ContentPage.Content>
+             x:Class="Navigation.Views.CustomButtonPage"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
+
+    <Grid BackgroundColor="#9ed1fa">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <RadialGradientBrush                  
+                Center="0.5,0.625"
+                Radius="0.3">
+                <GradientStop Color="#b3ccff"
+                              Offset="0" />
+                <GradientStop Color="#80aaff"
+                              Offset="1" />
+            </RadialGradientBrush>
+        </Grid.Background>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <yummy:PancakeView BackgroundColor="#2196F3"
+                               CornerRadius="0,0,20,20"
+                               IsClippedToBounds="true"
+                               HorizontalOptions="FillAndExpand"
+                               HeightRequest="150"
+                               BackgroundGradientStartPoint="0,0"
+                               BackgroundGradientEndPoint="1,1"
+                               >
+                <yummy:PancakeView.BackgroundGradientStops>
+                    <yummy:GradientStopCollection>
+                        <yummy:GradientStop Color="#2196F3"
+                                            Offset="1" />
+                        <yummy:GradientStop Color="#9ed1fa"
+                                            Offset="0" />
+
+                    </yummy:GradientStopCollection>
+                </yummy:PancakeView.BackgroundGradientStops>
+
+                <Label Text="Custom Buttons."
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       FontSize="40"
+                       VerticalTextAlignment="Center"
+                       Margin="20,0" />
+
+            </yummy:PancakeView>
         </StackLayout>
-    </ContentPage.Content>
+
+        <StackLayout Grid.Row="1">
+        <Frame HeightRequest="450"
+               HorizontalOptions="FillAndExpand"
+               BackgroundColor="LightGray"
+               Margin="0,-6,0,0"
+               Opacity="0">
+        </Frame>
+        </StackLayout>
+    </Grid>
+   
 </ContentPage>
