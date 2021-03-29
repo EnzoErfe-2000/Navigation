@@ -19,5 +19,9 @@ namespace Navigation.Views
         {
             await Navigation.PushAsync(new CalculatorPage());
         }
+        async void GoToCustBtn(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new CustomButtonPage());
+        }
     }
 }
