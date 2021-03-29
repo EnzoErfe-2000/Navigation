@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,11 +54,28 @@ namespace Navigation.Views
             IsAntialias = true
         };
 
+        SKPaint grayFillPaint = new SKPaint
+        {
+            Style = SKPaintStyle.Fill,
+            Color = SKColors.Gray
+            //IsAntialias = true
+        };
+
+        SKPaint backgroundFillPaint = new SKPaint
+        {
+            Style = SKPaintStyle.Fill
+        };
 
         SKPath catEarPath = new SKPath();
         SKPath catEyePath = new SKPath();
         SKPath catPupilPath = new SKPath();
         SKPath catTailPath = new SKPath();
+
+        SKPath hourHandPath = SKPath.ParseSvgPathData(
+            "M 0 -60 C 0 -30 20 -30 5 -20 L 5 0 C 5 7.5 -5 7.5 -5 0 L -5 -20 C -20 -30 0 -30 0 -60");
+
+        SKPath minuteHandPath = SKPath.ParseSvgPathData(
+            "M 0 -80 C 0 -75 0 -70 2.5 -60 L 2.5 0 C 2.5 5 -2.5 5 -2.5 0 L -2.5 -60 C 0 -70 0 -75 0 -80");
 
         public CalculatorPage()
         {
@@ -84,18 +103,30 @@ namespace Navigation.Views
             catTailPath.MoveTo(0, 100);
             catTailPath.CubicTo(50, 200, 0, 250, -50, 200);
 
-            Device.StartTimer(TimeSpan.FromSeconds(1f / 60), () =>
+            //Create Shader
+            Assembly assembly = GetType().GetTypeInfo().Assembly;
+            using (Stream stream = assembly.GetManifestResourceStream("Navigation.WoodGrain.png"))
+            using (SKManagedStream skStream = new SKManagedStream(stream))
+            using (SKBitmap bitmap = SKBitmap.Decode(skStream))
+            using (SKShader shader = SKShader.CreateBitmap(bitmap, SKShaderTileMode.Mirror, SKShaderTileMode.Mirror))
             {
-                canvasView.InvalidateSurface();
-                return true;
-            });
+                backgroundFillPaint.Shader = shader;
+            }
+
+                Device.StartTimer(TimeSpan.FromSeconds(1f / 60), () =>
+                {
+                    canvasView.InvalidateSurface();
+                    return true;
+                });
         }
         private void canvasView_paintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
             SKSurface surface = e.Surface;
             SKCanvas canvas = surface.Canvas;
 
-            canvas.Clear(SKColors.CornflowerBlue);
+            //canvas.Clear(SKColors.CornflowerBlue);
+            canvas.DrawPaint(backgroundFillPaint);
+
 
             int width = e.Info.Width;
             int height = e.Info.Height;
@@ -139,11 +170,20 @@ namespace Navigation.Views
                 canvas.Restore();
             }
 
+            //Move Tail
+            float t = (float)Math.Sin((dateTime.Second % 2 + dateTime.Millisecond / 1000.0) * Math.PI);
+            catTailPath.Reset();
+            catTailPath.MoveTo(0, 100);
+            SKPoint point1 = new SKPoint(-50 * t, 200);
+            SKPoint point2 = new SKPoint(0, 250 - Math.Abs(50 * t));
+            SKPoint point3 = new SKPoint(50 * t, 250 - Math.Abs(75 * t));
+            catTailPath.CubicTo(point1, point2, point3);
+
             //Draw tail
             canvas.DrawPath(catTailPath, blackStrokePaint);
 
             //Hour & Minute marks
-            for(int angle=0; angle<360; angle += 6)
+            for (int angle=0; angle<360; angle += 6)
             {
                 canvas.DrawCircle(0, -90, angle % 30 == 0 ? 4 : 2, whiteFillPaint);
                 canvas.RotateDegrees(6);
@@ -152,20 +192,26 @@ namespace Navigation.Views
             //Hour hand
             canvas.Save();
             canvas.RotateDegrees(30 * dateTime.Hour + dateTime.Minute / 2f);
-            whiteStrokePaint.StrokeWidth = 15;
-            canvas.DrawLine(0, 0, 0, -50, whiteStrokePaint);
+            //whiteStrokePaint.StrokeWidth = 15;
+            //canvas.DrawLine(0, 0, 0, -50, whiteStrokePaint);
+            canvas.DrawPath(hourHandPath, grayFillPaint);
+            canvas.DrawPath(hourHandPath, whiteStrokePaint);
             canvas.Restore();
+
             //Minute hand
             canvas.Save();
             canvas.RotateDegrees(6 * dateTime.Minute + dateTime.Second / 10f);
-            whiteStrokePaint.StrokeWidth = 10;
-            canvas.DrawLine(0, 0, 0, -70, whiteStrokePaint);
+            //whiteStrokePaint.StrokeWidth = 10;
+            //canvas.DrawLine(0, 0, 0, -70, whiteStrokePaint);
+            canvas.DrawPath(minuteHandPath, grayFillPaint);
+            canvas.DrawPath(minuteHandPath, whiteStrokePaint);
             canvas.Restore();
+
             //Second hand
             canvas.Save();
             float seconds = dateTime.Second + dateTime.Millisecond / 1000f; 
             canvas.RotateDegrees(6 * seconds);
-            whiteStrokePaint.StrokeWidth = 2;
+            //whiteStrokePaint.StrokeWidth = 2;
             canvas.DrawLine(0, 10, 0, -80, whiteStrokePaint);
             canvas.Restore();
 
